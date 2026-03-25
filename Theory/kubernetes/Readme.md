@@ -1,4 +1,4 @@
-#   Kubernetes Hands-on: Apache Web Server Deployment (httpd)
+#  Kubernetes Hands-on: Apache Web Server Deployment (httpd)
 
 ##  Objective
 
@@ -6,81 +6,97 @@ This project demonstrates how to deploy, manage, scale, and debug a simple Apach
 
 By completing this lab, you will learn:
 
-* How to run a Pod
-* Convert a Pod into a Deployment
+* Run a Pod
+* Convert Pod → Deployment
 * Expose applications using Services
 * Scale applications
-* Debug common issues
-* Explore containers internally
-* Understand self-healing in Kubernetes
+* Debug issues
+* Explore containers
+* Understand self-healing
 
 ---
 
 ##  Prerequisites
 
-* Kubernetes cluster (Minikube / Kind / Cloud)
-* `kubectl` installed and configured
-* Basic knowledge of containers and Kubernetes
+* Kubernetes cluster (Minikube / Docker Desktop / Kind)
+* `kubectl` installed
+* Basic knowledge of containers
 
 ---
 
-## 📂 Project Workflow
+# 📂 Project Workflow
 
-### 🔹 Step 1: Run a Pod
+---
+
+## 🔹 Step 1: Run a Pod
 
 ```bash
 kubectl run apache-pod --image=httpd
 kubectl get pods
 ```
 
+ **Output Screenshot:**
+![Step 1](a1.png)
+
 ---
 
-### 🔹 Step 2: Inspect the Pod
+## 🔹 Step 2: Inspect the Pod
 
 ```bash
 kubectl describe pod apache-pod
 ```
 
-Check for:
+Check:
 
 * Container image
-* Port (default: 80)
+* Port (80)
 * Events
+
+ **Output Screenshot:**
+![Step 2](a2.png)
 
 ---
 
-### 🔹 Step 3: Access the Application
+## 🔹 Step 3: Access the Application
 
 ```bash
 kubectl port-forward pod/apache-pod 8081:80
 ```
 
-Open in browser:
+Open:
 
 ```
 http://localhost:8081
 ```
 
-Expected Output: **Apache default page ("It works!")**
+ Output: **Apache “It works!” page**
+
+ **Output Screenshot:**
+![Step 3](a3.png)
 
 ---
 
-### 🔹 Step 4: Delete Pod
+## 🔹 Step 4: Delete Pod
 
 ```bash
 kubectl delete pod apache-pod
 ```
 
+ **Output Screenshot:**
+![Step 4](a4.png)
+
  Insight:
 
-* Pod is permanently deleted
-* No automatic recovery (no self-healing)
+* Pod deleted permanently
+* No self-healing
 
 ---
 
-##  Convert to Deployment
+#  Convert to Deployment
 
-### 🔹 Step 5: Create Deployment
+---
+
+## 🔹 Step 5: Create Deployment
 
 ```bash
 kubectl create deployment apache --image=httpd
@@ -88,9 +104,12 @@ kubectl get deployments
 kubectl get pods
 ```
 
+ **Output Screenshot:**
+![Step 5](a5.png)
+
 ---
 
-### 🔹 Step 6: Expose Deployment
+## 🔹 Step 6: Expose Deployment
 
 ```bash
 kubectl expose deployment apache --port=80 --type=NodePort
@@ -103,16 +122,24 @@ Open:
 http://localhost:8082
 ```
 
+ **Output Screenshot:**
+![Step 6](a6.png)
+
 ---
 
-##  Modify Behavior
+#  Modify Behavior
 
-### 🔹 Step 7: Scale Deployment
+---
+
+## 🔹 Step 7: Scale Deployment
 
 ```bash
 kubectl scale deployment apache --replicas=2
 kubectl get pods
 ```
+
+ **Output Screenshot:**
+![Step 7](a7.png)
 
  Observation:
 
@@ -120,124 +147,155 @@ kubectl get pods
 
 ---
 
-### 🔹 Step 8: Test Load Distribution
+## 🔹 Step 8: Load Distribution
 
 * Refresh browser multiple times
-* Traffic is distributed across pods
+
+ **Output Screenshot:**
+![Step 8](a8.png)
+
+ Traffic distributed across pods
 
 ---
 
-##  Debugging Scenario
+#  Debugging Scenario
 
-### 🔹 Step 9: Break the Application
+---
+
+## 🔹 Step 9: Break the Application
 
 ```bash
 kubectl set image deployment/apache httpd=wrongimage
 kubectl get pods
 ```
 
+ **Output Screenshot:**
+![Step 9](a9.png)
+
 ---
 
-### 🔹 Step 10: Diagnose Issue
+## 🔹 Step 10: Diagnose Issue
 
 ```bash
 kubectl describe pod <pod-name>
 ```
 
-Look for:
+Check:
 
 * `ImagePullBackOff`
-* Error messages
+* Error logs
+
+ **Output Screenshot:**
+![Step 10](a10.png)
 
 ---
 
-### 🔹 Step 11: Fix the Issue
+## 🔹 Step 11: Fix the Issue
 
 ```bash
 kubectl set image deployment/apache httpd=httpd
 ```
 
+ **Output Screenshot:**
+![Step 11](a11.png)
+
 ---
 
-##  Explore Inside Container
+#  Explore Inside Container
 
-### 🔹 Step 12: Exec into Pod
+---
+
+## 🔹 Step 12: Exec into Pod
 
 ```bash
 kubectl exec -it <pod-name> -- /bin/bash
 ```
 
-Inside container:
+Inside:
 
 ```bash
 ls /usr/local/apache2/htdocs
 ```
 
- This directory contains web files.
+ **Output Screenshot:**
+![Step 12](a12.png)
 
-Exit:
-
-```bash
-exit
-```
 
 ---
 
-##  Self-Healing Feature
+#  Self-Healing Feature
 
-### 🔹 Step 13: Delete One Pod
+---
+
+## 🔹 Step 13: Delete One Pod
 
 ```bash
 kubectl delete pod <pod-name>
 kubectl get pods -w
 ```
 
+ **Output Screenshot:**
+![Step 13](a13.png)
+
  Insight:
 
-* Deployment automatically recreates the pod
+* Kubernetes recreates pod automatically
 
 ---
 
-##  Cleanup
+#  Cleanup
 
 ```bash
 kubectl delete deployment apache
 kubectl delete service apache
 ```
 
+ **Output Screenshot:**
+![Cleanup](a14.png)
+
 ---
 
-##  Key Learnings
+#  Key Learnings
 
 * Difference between Pod and Deployment
-* How Kubernetes ensures high availability
-* Scaling applications dynamically
-* Debugging real-world container issues
+* High availability in Kubernetes
+* Scaling applications
+* Debugging container issues
 * Accessing container filesystem
-* Understanding self-healing
+* Self-healing mechanism
+
+
+![Summary 1](a15.png)
+![Summary 2](a16.png)
 
 ---
 
-##  Optional Challenge
+#  Optional Challenge
 
-Modify the web page dynamically:
+Modify web page dynamically:
 
 ```bash
 kubectl exec -it <pod-name> -- /bin/bash
 ```
 
-Then:
-
 ```bash
 echo "Hello from Kubernetes" > /usr/local/apache2/htdocs/index.html
 ```
 
-Refresh browser to see changes.
+ **Output Screenshot:**
+![Challenge](a17.png)
+
 
 ---
 
-##  Conclusion
+#  Conclusion
 
-This hands-on exercise provides a complete introduction to running web applications in Kubernetes using Apache. It covers deployment, scaling, debugging, and internal exploration—essential skills for DevOps and cloud engineers.
+This project provides a complete hands-on understanding of running web applications in Kubernetes using Apache.
 
----
+It covers:
+
+* Deployment
+* Scaling
+* Debugging
+* Container access
+* Self-healing
