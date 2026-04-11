@@ -7,12 +7,6 @@ pipeline {
 
     stages {
 
-        stage('Clone Source') {
-            steps {
-                git 'https://github.com/Shruti-425/Shruti_Containerizarion_lab.git'
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t $IMAGE_NAME:latest Lab/Experiment-7'
