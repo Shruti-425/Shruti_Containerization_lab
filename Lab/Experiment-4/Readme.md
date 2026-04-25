@@ -10,6 +10,7 @@
 mkdir my-flask-app
 cd my-flask-app
 ```
+![Step 1 Output](IMAGES/img1.png)
 
 ---
 
@@ -97,12 +98,14 @@ test_*.py
 ```bash
 docker build -t my-flask-app .
 ```
+![Step 1 Output](IMAGES/img2.png)
 
 Check images:
 
 ```bash
 docker images
 ```
+![Step 1 Output](IMAGES/img3.png)
 
 ---
 
@@ -114,11 +117,14 @@ Tag with version:
 docker build -t my-flask-app:1.0 .
 ```
 
+![Step 1 Output](IMAGES/img4.png)
+
 Multiple tags:
 
 ```bash
 docker build -t my-flask-app:latest -t my-flask-app:1.0 .
 ```
+![Step 1 Output](IMAGES/img5.png)
 
 Custom registry:
 
@@ -126,11 +132,13 @@ Custom registry:
 docker build -t ss1234ss1234/my-flask-app:1.0 .
 ```
 
+
 Tag existing image:
 
 ```bash
 docker tag my-flask-app:latest my-flask-app:v1
 ```
+![Step 1 Output](IMAGES/img10.png)
 
 ---
 
@@ -141,7 +149,8 @@ docker images
 docker history my-flask-app
 docker inspect my-flask-app
 ```
-
+![Step 1 Output](IMAGES/img11.png)
+![Step 1 Output](IMAGES/img12.png)
 ---
 
 # Part 4: Running Containers
@@ -151,6 +160,7 @@ docker inspect my-flask-app
 ```bash
 docker run -d -p 5000:5000 --name flask-container my-flask-app
 ```
+![Step 1 Output](IMAGES/img13.png)
 
 Test:
 
@@ -164,7 +174,8 @@ Check:
 docker ps
 docker logs flask-container
 ```
-
+![Step 1 Output](IMAGES/img14.png)
+![Step 1 Output](IMAGES/img15.png)
 ---
 
 ## Step 2: Manage Containers
@@ -175,6 +186,7 @@ docker start flask-container
 docker rm flask-container
 docker rm -f flask-container
 ```
+![Step 1 Output](IMAGES/img16.png)
 
 ---
 
@@ -226,6 +238,8 @@ docker build -t flask-regular .
 docker build -f Dockerfile.multistage -t flask-multistage .
 docker images | grep flask-
 ```
+![Step 1 Output](IMAGES/img18.png)
+![Step 1 Output](IMAGES/img19.png)
 
 ---
 
@@ -238,6 +252,7 @@ docker login
 docker tag my-flask-app:latest ss1234ss1234/my-flask-app:1.0
 docker tag my-flask-app:latest ss1234ss1234/my-flask-app:latest
 ```
+![Step 1 Output](IMAGES/img22.png)
 
 Push:
 
@@ -245,7 +260,8 @@ Push:
 docker push ss1234ss1234/my-flask-app:1.0
 docker push ss1234ss1234/my-flask-app:latest
 ```
-
+![Step 1 Output](IMAGES/img24.png)
+![Step 1 Output](IMAGES/img25.png)
 ---
 
 ## Step 2: Pull & Run
@@ -254,7 +270,8 @@ docker push ss1234ss1234/my-flask-app:latest
 docker pull ss1234ss1234/my-flask-app:latest
 docker run -d -p 5000:5000 ss1234ss1234/my-flask-app:latest
 ```
-
+![Step 1 Output](IMAGES/img26.png)
+![Step 1 Output](IMAGES/img27.png)
 ---
 
 # Part 7: Node.js Example
@@ -265,6 +282,7 @@ docker run -d -p 5000:5000 ss1234ss1234/my-flask-app:latest
 mkdir my-node-app
 cd my-node-app
 ```
+![Step 1 Output](IMAGES/img28.png)
 
 ### app.js
 
@@ -328,6 +346,7 @@ CMD ["node", "app.js"]
 docker build -t my-node-app .
 docker run -d -p 3000:3000 --name node-container my-node-app
 ```
+![Step 1 Output](IMAGES/img29.png)
 
 Test:
 
